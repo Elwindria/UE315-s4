@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Catalogue</title>
+  <link rel="stylesheet" href="/styles-catalogue.css">
+</head>
+<body>
+  <h1>Catalogue</h1>
+
+  <ul>
+    <% documents.forEach(doc => { %>
+        <li>
+            <%= doc.fields.titre_avec_lien_vers_le_catalogue %>
+        </li>
+        <li>
+            <strong><%= doc.title %></strong>
+            <% if (doc.FIELD9 === "borrowed") { %>
+                (Emprunté)
+            <% } else { %>
+                (Disponible)
+            <% } %>
+        </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
