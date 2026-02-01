@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Statistiques du Catalogue</title>
+  <link rel="stylesheet" href="/styles-stats.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 Statistiques du Catalogue</h1>
+      <nav>
+        <a href="/" class="nav-link">📚 Retour au catalogue</a>
+      </nav>
+    </header>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="error">
+        ❌ <%= error %>
+      </div>
+    <% } else { %>
+      <!-- Vue d'ensemble -->
+      <section class="section">
+        <h2>📈 Vue d'ensemble</h2>
+        <div class="overview-cards">
+          <div class="card">
+            <span class="card-value"><%= totalDocuments %></span>
+            <span class="card-label">DOCUMENTS AU TOTAL</span>
+          </div>
+          <div class="card">
+            <span class="card-value"><%= totalTypes %></span>
+            <span class="card-label">TYPES DIFFÉRENTS</span>
+          </div>
+          <div class="card">
+            <span class="card-value"><%= totalReservations %></span>
+            <span class="card-label">RÉSERVATIONS TOTALES</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Documents par type -->
+      <section class="section">
+        <h2>📚 Nombre de documents par type</h2>
+        <div class="chart-container">
+          <div class="bar-chart">
+            <% documentsByType.forEach(item => { %>
+              <div class="bar-item">
+                <span class="bar-label"><%= item.type %></span>
+                <div class="bar-container">
+                  <div class="bar" style="width: <%= (item.count / maxDocCount) * 100 %>%"></div>
+                </div>
+                <span class="bar-value"><%= item.count %></span>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+
+      <!-- Réservations par type -->
+      <section class="section">
+        <h2>⭐ Réservations par type de document</h2>
+        <div class="reservations-list">
+          <% reservationsByType.forEach(item => { %>
+            <div class="reservation-item">
+              <div class="reservation-header">
+                <span class="reservation-type"><%= item.type %></span>
+                <span class="reservation-count"><%= item.totalReservations %> réservations</span>
+              </div>
+              <div class="reservation-details">
+                <%= item.count %> document(s) • Moyenne: <%= item.average %> réservation(s) par document
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <!-- Top 10 auteurs -->
+      <section class="section">
+        <h2>👤 Top 10 des auteurs</h2>
+        <div class="authors-list">
+          <% topAuthors.forEach(item => { %>
+            <div class="author-item">
+              <span class="author-name"><%= item.author %></span>
+              <span class="author-count"><%= item.count %></span>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <div class="success-message">
+        ✅ Statistiques chargées avec succès
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
