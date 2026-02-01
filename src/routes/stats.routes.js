@@ -106,6 +106,45 @@ router.get("/", async (req, res) => {
     console.error("Erreur stats:", error);
     res.status(500).render("stats", { error: "Erreur lors du chargement des statistiques" });
   }
+
+  router.post("/borrow/:id", async (req, res) => {
+  try {
+    const db = await connectDB();
+    const collection = db.collection(COLLECTION);
+
+    const _id = new ObjectId(req.params.id);
+
+    const result = await collection.updateOne(
+      { _id, $or: [{ "fields.FIELD9": "" }, { "fields.FIELD9": { $exists: false } }, { "fields.FIELD9": null }] },
+      { $set: { "fields.FIELD9": "borrowed" } }
+    );
+
+    return res.redirect(result.modifiedCount === 1 ? "/?msg=borrowed" : "/?msg=already");
+  } catch (err) {
+    console.error("POST /borrow error:", err);
+    return res.redirect("/?msg=error");
+  }
+  });
+
+  router.post("/return/:id", async (req, res) => {
+    try {
+      const db = await connectDB();
+      const collection = db.collection(COLLECTION);
+
+      const _id = new ObjectId(req.params.id);
+
+      const result = await collection.updateOne(
+        { _id, $or: [{ "fields.FIELD9": { $ne: "" } }, { "fields.FIELD9": { $exists: false } }] },
+        { $set: { "fields.FIELD9": "" } }
+      );
+
+      return res.redirect(result.modifiedCount === 1 ? "/?msg=returned" : "/?msg=already");
+    } catch (err) {
+      console.error("POST /return error:", err);
+      return res.redirect("/?msg=error");
+    }
+});
+
 });
 
 module.exports = router;

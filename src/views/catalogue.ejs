@@ -1,26 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Catalogue</title>
-  <link rel="stylesheet" href="/styles-catalogue.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Médiathèque • Catalogue</title>
+  <link rel="stylesheet" href="/styles-base.css" />
+  <link rel="stylesheet" href="/styles-catalogue.css" />
 </head>
-<body>
-  <h1>Catalogue</h1>
 
-  <ul>
-    <% documents.forEach(doc => { %>
-        <li>
-            <%= doc.fields.titre_avec_lien_vers_le_catalogue %>
-        </li>
-        <li>
-            <strong><%= doc.title %></strong>
-            <% if (doc.FIELD9 === "borrowed") { %>
-                (Emprunté)
-            <% } else { %>
-                (Disponible)
-            <% } %>
-        </li>
-    <% }) %>
-  </ul>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <div class="brand__logo">📚</div>
+        <div class="brand__text">
+          <div class="brand__title">Médiathèque</div>
+          <div class="brand__subtitle">Catalogue & emprunts (FIELD9)</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav__link is-active" href="/">Catalogue</a>
+        <a class="nav__link" href="/stats">Statistiques</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero__copy">
+        <h1>Catalogue</h1>
+        <p>Rechercher, emprunter ou rendre un document. Le statut est stocké dans <code>fields.FIELD9</code>.</p>
+      </div>
+
+      <form class="search" method="GET" action="/">
+        <input
+          class="search__input"
+          type="search"
+          name="q"
+          value="<%= q %>"
+          placeholder="Rechercher (titre, auteur, type...)"
+          autocomplete="off"
+        />
+        <button class="btn btn--primary" type="submit">Rechercher</button>
+        <% if (q) { %>
+          <a class="btn btn--ghost" href="/">Reset</a>
+        <% } %>
+      </form>
+    </section>
+
+    <% if (msg) { %>
+      <div class="toast <%= msg === 'error' ? 'toast--error' : 'toast--success' %>">
+        <% if (msg === "borrowed") { %>✅ Document emprunté.<% } %>
+        <% if (msg === "returned") { %>✅ Document rendu.<% } %>
+        <% if (msg === "already") { %>ℹ️ Action non effectuée (déjà dans cet état).<% } %>
+        <% if (msg === "error") { %>❌ Erreur serveur. Réessayez.<% } %>
+      </div>
+    <% } %>
+
+    <section class="grid">
+      <% documents.forEach(doc => { 
+        const f = doc.fields || {};
+        const title = f.titre_avec_lien_vers_le_catalogue || "Titre non défini";
+        const author = (f.auteur && String(f.auteur).trim()) ? f.auteur : "Auteur non défini";
+        const type = f.type_de_document || "Type non défini";
+        const rang = (typeof f.rang !== "undefined") ? f.rang : null;
+        const reservations = (typeof f.nombre_de_reservations !== "undefined") ? f.nombre_de_reservations : null;
+
+        const borrowed = isBorrowed(doc);
+      %>
+
+      <article class="card">
+        <div class="card__top">
+          <span class="pill <%= borrowed ? 'pill--warn' : 'pill--ok' %>">
+            <%= borrowed ? "Emprunté" : "Disponible" %>
+          </span>
+
+          <div class="card__meta">
+            <% if (rang !== null) { %><span class="chip">Rang <%= rang %></span><% } %>
+            <% if (reservations !== null) { %><span class="chip"><%= reservations %> réservations</span><% } %>
+          </div>
+        </div>
+
+        <h3 class="card__title"><%= title %></h3>
+
+        <div class="card__info">
+          <div class="kv">
+            <span class="kv__k">Auteur</span>
+            <span class="kv__v"><%= author %></span>
+          </div>
+          <div class="kv">
+            <span class="kv__k">Type</span>
+            <span class="kv__v"><%= type %></span>
+          </div>
+        </div>
+
+        <div class="card__actions">
+          <% if (!borrowed) { %>
+            <form method="POST" action="/borrow/<%= doc._id %>">
+              <button class="btn btn--primary" type="submit">Emprunter</button>
+            </form>
+          <% } else { %>
+            <form method="POST" action="/return/<%= doc._id %>">
+              <button class="btn btn--danger" type="submit">Rendre</button>
+            </form>
+          <% } %>
+
+          <button class="btn btn--ghost" type="button"
+            onclick="navigator.clipboard?.writeText('<%= doc.recordid || doc._id %>')">
+            Copier ID
+          </button>
+        </div>
+      </article>
+
+      <% }) %>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <span>UE L315 • Semaine 4 • Node.js + Express + MongoDB</span>
+        <span class="sep">•</span>
+        <span><%= documents.length %> document(s)</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const toast = document.querySelector(".toast");
+    if (toast) setTimeout(() => toast.remove(), 3500);
+  </script>
 </body>
 </html>
