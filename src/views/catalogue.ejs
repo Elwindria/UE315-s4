@@ -16,17 +16,23 @@
         <section class="section">
             <ul class="overview-cards">
                 <% documents.forEach(doc => { %>
-                    <li class="card">
-                        <div class="card-value"><%= doc.fields?.titre_avec_lien_vers_le_catalogue || "Sans titre" %></div>
+                <li class="card">
+                    <div class="card-value">
+                    <%= doc.fields?.titre_avec_lien_vers_le_catalogue || "Sans titre" %>
+                    </div>
 
-                        <div>
-                            <% if (doc.FIELD9 === "borrowed") { %>
-                                <span class="nav-link">Emprunté</span>
-                            <% } else { %>
-                                <span class="nav-link">Disponible</span>
-                            <% } %>
-                        </div>
-                    </li>
+                    <div class="card-actions">
+                    <% if (doc.FIELD9 === "borrowed") { %>
+                        <form method="POST" action="/return/<%= doc._id %>?page=<%= page %>&limit=<%= limit %>">
+                        <button type="submit" class="nav-link red">Rendre</button>
+                        </form>
+                    <% } else { %>
+                        <form method="POST" action="/borrow/<%= doc._id %>?page=<%= page %>&limit=<%= limit %>">
+                        <button type="submit" class="nav-link green">Emprunter</button>
+                        </form>
+                    <% } %>
+                    </div>
+                </li>
                 <% }) %>
             </ul>
         </section>

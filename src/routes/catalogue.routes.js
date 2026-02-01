@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../db/mongo");
+const { ObjectId } = require("mongodb");
 
 router.get("/", async (req, res) => {
   const db = await connectDB();
@@ -30,6 +31,42 @@ router.get("/", async (req, res) => {
     total,
     totalPages,
   });
+});
+
+// EMPRUNTER
+router.post("/borrow/:id", async (req, res) => {
+  const db = await connectDB();
+  const collection = db.collection("livre");
+
+  const id = req.params.id;
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+
+  // Update conditionnel : seulement si disponible
+  await collection.updateOne(
+    { _id: new ObjectId(id), $or: [{ FIELD9: { $exists: false } }, { FIELD9: null }, { FIELD9: "" }] },
+    { $set: { FIELD9: "borrowed" } }
+  );
+
+  res.redirect(`/?page=${page}&limit=${limit}`);
+});
+
+// RENDRE
+router.post("/return/:id", async (req, res) => {
+  const db = await connectDB();
+  const collection = db.collection("livre");
+
+  const id = req.params.id;
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
+
+  // Update conditionnel : seulement si emprunté
+  await collection.updateOne(
+    { _id: new ObjectId(id), FIELD9: "borrowed" },
+    { $set: { FIELD9: "" } } // ou null si tu préfères
+  );
+
+  res.redirect(`/?page=${page}&limit=${limit}`);
 });
 
 module.exports = router;
