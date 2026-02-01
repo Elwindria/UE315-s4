@@ -5,34 +5,41 @@
   <link rel="stylesheet" href="/styles-catalogue.css">
 </head>
 <body>
-  <h1>Catalogue</h1>
+    <div class="container">
+        <header>
+            <h1>📚 Catalogue</h1>
+            <nav>
+                <a href="/stats" class="nav-link">📊 Vers statistiques</a>
+            </nav>
+        </header>
 
-    <ul>
-    <% documents.forEach(doc => { %>
-        <li>
-        <div><%= doc.fields?.titre_avec_lien_vers_le_catalogue || "Sans titre" %></div>
+        <ul>
+            <% documents.forEach(doc => { %>
+                <li>
+                <div><%= doc.fields?.titre_avec_lien_vers_le_catalogue || "Sans titre" %></div>
 
-        <div>
-            <% if (doc.FIELD9 === "borrowed") { %>
-            <span>(Emprunté)</span>
-            <% } else { %>
-            <span>(Disponible)</span>
+                <div>
+                    <% if (doc.FIELD9 === "borrowed") { %>
+                    <span>(Emprunté)</span>
+                    <% } else { %>
+                    <span>(Disponible)</span>
+                    <% } %>
+                </div>
+                </li>
+            <% }) %>
+        </ul>
+
+        <nav class="pagination">
+            <% if (page > 1) { %>
+                <a href="/?page=<%= page - 1 %>&limit=<%= limit %>">Précédent</a>
             <% } %>
-        </div>
-        </li>
-    <% }) %>
-    </ul>
 
-    <nav class="pagination">
-    <% if (page > 1) { %>
-        <a href="/?page=<%= page - 1 %>&limit=<%= limit %>">Précédent</a>
-    <% } %>
+            <span>Page <%= page %> / <%= totalPages %> — <%= total %> livres</span>
 
-    <span>Page <%= page %> / <%= totalPages %> — <%= total %> livres</span>
-
-    <% if (page < totalPages) { %>
-        <a href="/?page=<%= page + 1 %>&limit=<%= limit %>">Suivant</a>
-    <% } %>
-    </nav>
+            <% if (page < totalPages) { %>
+                <a href="/?page=<%= page + 1 %>&limit=<%= limit %>">Suivant</a>
+            <% } %>
+        </nav>
+    </div>
 </body>
 </html>
