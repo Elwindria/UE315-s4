@@ -7,20 +7,32 @@
 <body>
   <h1>Catalogue</h1>
 
-  <ul>
+    <ul>
     <% documents.forEach(doc => { %>
         <li>
-            <%= doc.fields.titre_avec_lien_vers_le_catalogue %>
-        </li>
-        <li>
-            <strong><%= doc.title %></strong>
+        <div><%= doc.fields?.titre_avec_lien_vers_le_catalogue || "Sans titre" %></div>
+
+        <div>
             <% if (doc.FIELD9 === "borrowed") { %>
-                (Emprunté)
+            <span>(Emprunté)</span>
             <% } else { %>
-                (Disponible)
+            <span>(Disponible)</span>
             <% } %>
+        </div>
         </li>
     <% }) %>
-  </ul>
+    </ul>
+
+    <nav class="pagination">
+    <% if (page > 1) { %>
+        <a href="/?page=<%= page - 1 %>&limit=<%= limit %>">Précédent</a>
+    <% } %>
+
+    <span>Page <%= page %> / <%= totalPages %> — <%= total %> livres</span>
+
+    <% if (page < totalPages) { %>
+        <a href="/?page=<%= page + 1 %>&limit=<%= limit %>">Suivant</a>
+    <% } %>
+    </nav>
 </body>
 </html>
