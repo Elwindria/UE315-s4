@@ -34,13 +34,13 @@
         <section class="section">
             <nav class="pagination">
                 <% if (page > 1) { %>
-                    <a href="/?page=<%= page - 1 %>&limit=<%= limit %>">Précédent</a>
+                    <a href="/?page=<%= page - 1 %>&limit=<%= limit %>" class="link_pagination">Précédent</a>
                 <% } %>
 
                 <span>Page <%= page %> / <%= totalPages %> — <%= total %> livres</span>
 
                 <% if (page < totalPages) { %>
-                    <a href="/?page=<%= page + 1 %>&limit=<%= limit %>">Suivant</a>
+                    <a href="/?page=<%= page + 1 %>&limit=<%= limit %>" class="link_pagination">Suivant</a>
                 <% } %>
             </nav>
         </section>

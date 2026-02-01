@@ -85,3 +85,14 @@ header h1 {
 ul {
     list-style: none;
 }
+
+/* pagination */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.link_pagination {
+    padding: 0 .625rem;
+}
