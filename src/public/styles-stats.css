@@ -1,0 +1,263 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link {
+  display: inline-block;
+  background: white;
+  color: #667eea;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.loading {
+  text-align: center;
+  color: white;
+  padding: 50px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.section {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+/* Overview Cards */
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.card-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.card-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+/* Bar Chart */
+.chart-container {
+  overflow-x: auto;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-label {
+  min-width: 250px;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: right;
+}
+
+.bar-container {
+  flex: 1;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 24px;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
+}
+
+.bar-value {
+  min-width: 50px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+/* Reservations List */
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reservation-item {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.reservation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.reservation-type {
+  font-weight: 600;
+  color: #333;
+}
+
+.reservation-count {
+  color: #667eea;
+  font-weight: 700;
+}
+
+.reservation-details {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Authors List */
+.authors-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.author-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.author-item:hover {
+  transform: translateX(5px);
+}
+
+.author-name {
+  color: #333;
+  font-weight: 500;
+}
+
+.author-count {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Success/Error Messages */
+.success-message {
+  text-align: center;
+  color: #28a745;
+  background: #d4edda;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.error {
+  text-align: center;
+  color: white;
+  background: #dc3545;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  .bar-label {
+    min-width: 150px;
+    font-size: 0.8rem;
+  }
+
+  .card-value {
+    font-size: 2rem;
+  }
+}
