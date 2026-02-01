@@ -13,7 +13,11 @@ body {
 
 .container {
   max-width: 1200px;
+  height: 100vh;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 header {
@@ -42,4 +46,42 @@ header h1 {
 .nav-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.section {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Overview Cards */
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+ul {
+    list-style: none;
 }
