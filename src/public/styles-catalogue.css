@@ -49,6 +49,17 @@
 }
 .card__actions form{margin:0}
 
+.pagination { margin-top: 18px; }
+.pagination__inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.pagination__info { opacity: 0.9; }
+.is-disabled { pointer-events: none; opacity: 0.5; }
+
 .footer{
   margin-top:22px;padding:16px;
   border-radius:var(--radius);
