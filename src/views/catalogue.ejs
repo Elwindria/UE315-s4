@@ -116,6 +116,35 @@
       <% }) %>
     </section>
 
+    <section>
+        <% if (totalPages > 1) { %>
+            <nav class="pagination" aria-label="Pagination">
+                <div class="pagination__inner">
+
+                <% const base = q ? `?q=${encodeURIComponent(q)}&` : `?`; %>
+
+                <% if (page > 1) { %>
+                    <a class="btn btn--ghost" href="/<%= base %>page=<%= page - 1 %>">← Précédent</a>
+                <% } else { %>
+                    <span class="btn btn--ghost is-disabled" aria-disabled="true">← Précédent</span>
+                <% } %>
+
+                <span class="pagination__info">
+                    Page <strong><%= page %></strong> / <strong><%= totalPages %></strong>
+                    • <%= total %> résultat(s)
+                </span>
+
+                <% if (page < totalPages) { %>
+                    <a class="btn btn--ghost" href="/<%= base %>page=<%= page + 1 %>">Suivant →</a>
+                <% } else { %>
+                    <span class="btn btn--ghost is-disabled" aria-disabled="true">Suivant →</span>
+                <% } %>
+
+                </div>
+            </nav>
+        <% } %>
+    </section>
+
     <footer class="footer">
       <div class="footer__inner">
         <span>UE L315 • Semaine 4 • Node.js + Express + MongoDB</span>
