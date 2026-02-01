@@ -12,8 +12,23 @@ router.get("/", async (req, res) => {
     const totalDocuments = await collection.countDocuments();
 
     // Nombre de types différents
-    const types = await collection.distinct("fields.type_de_document");
-    const totalTypes = types.filter(t => t).length;
+    const types = await collection.aggregate([
+      {
+        $group: {
+          _id: {
+            $switch: {
+              branches: [
+                { case: { $eq: [{ $type: "$fields.type_de_document" }, "missing"] }, then: "Non défini (manquant)" },
+                { case: { $eq: ["$fields.type_de_document", null] }, then: "Non défini (null)" }
+              ],
+              default: "$fields.type_de_document"
+            }
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ]).toArray();
+    const totalTypes = types.length;
 
     // Total des réservations
     const reservationsResult = await collection.aggregate([
